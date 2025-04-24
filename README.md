@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="qris-logo.png" alt="QRIS Logo" width="150"/>
+  <img src="qriss.png" alt="QRIS Logo" width="150"/>
 </p>
 
 <h1 align="center">🚀 QRIS Payment Package</h1>
