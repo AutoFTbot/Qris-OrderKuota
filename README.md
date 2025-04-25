@@ -18,6 +18,7 @@
   <img src="https://img.shields.io/github/license/AutoFTbot/Qris-OrderKuota?style=for-the-badge&color=orange&cacheSeconds=1" />
   <img src="https://img.shields.io/github/stars/AutoFTbot/Qris-OrderKuota?style=for-the-badge&logo=github" />
   <img src="https://img.shields.io/github/forks/AutoFTbot/Qris-OrderKuota?style=for-the-badge&logo=github" />
+  </a>
 </p>
 
 ---
@@ -42,3 +43,16 @@
 | 🐍 Python                | [`README.py.md`](README.py.md) |
 
 ---
+
+## ❤️ Dukungan
+
+Jika kamu suka proyek ini dan ingin mendukung pengembangannya, kamu bisa:
+
+- ⭐ Memberi bintang repo ini
+- 🔄 Share ke teman-teman developer lainnya
+
+<a href="https://ko-fi.com/FighterTunnel" target="_blank">
+<img src="https://img.shields.io/badge/donate-buymeacoffee-yellow?style=for-the-badge&logo=buymeacoffee&logoColor=black" />
+
+---
+
