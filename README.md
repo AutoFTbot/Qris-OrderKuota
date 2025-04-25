@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/qris-payment"><img src="https://img.shields.io/npm/v/qris-payment?style=for-the-badge&logo=npm&color=crimson" /></a>
   <a href="https://pypi.org/project/qris-payment/"><img src="https://img.shields.io/pypi/v/qris-payment?style=for-the-badge&logo=python&color=blue" /></a>
-  <img src="https://img.shields.io/github/license/AutoFTbot/Qris-OrderKuota?style=for-the-badge&color=orange" />
+  <img src="https://img.shields.io/github/license/AutoFTbot/Qris-OrderKuota?style=for-the-badge&color=orange&cacheSeconds=1" />
   <img src="https://img.shields.io/github/stars/AutoFTbot/Qris-OrderKuota?style=for-the-badge&logo=github" />
 </p>
 
