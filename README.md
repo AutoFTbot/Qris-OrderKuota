@@ -67,9 +67,3 @@ Jika kamu suka proyek ini dan ingin mendukung pengembangannya, kamu bisa:
 
 - ⭐ Memberi bintang repo ini  
 - 🔄 Share ke teman-teman developer lainnya  
-<a href="https://trakteer.id/FighterTunnel" target="_blank">
-  <img src="https://img.shields.io/badge/Donate-Trakteer-red?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIA..." />
-</a>
-<a href="https://ko-fi.com/FighterTunnel" target="_blank">
-  <img src="https://img.shields.io/badge/Donate-Ko--fi-ff5f5f?style=for-the-badge&logo=ko-fi&logoColor=white" />
-</a>
