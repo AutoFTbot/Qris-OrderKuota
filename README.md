@@ -47,7 +47,6 @@ Untuk menggunakan package ini, kamu membutuhkan **QR base string** dari QRIS. Ik
 > Contoh hasil:
 00020101021226690014ID.CO.QRIS.WWW01189360091311520010303120123456789040415ID10203040506070809051003UME51440014ID.CO.BANK90203123456303201234567890503...
 
-
 ---
 
 ## 📚 Dokumentasi
@@ -58,6 +57,9 @@ Untuk menggunakan package ini, kamu membutuhkan **QR base string** dari QRIS. Ik
 |--------|------|
 | 🟨 JavaScript (Node.js) | [`README.js.md`](README.js.md) |
 | 🐍 Python                | [`README.py.md`](README.py.md) |
+
+> 📖 Atau kunjungi dokumentasi lengkap di:  
+> 👉 [https://qrisorderkuota.hashnode.space](https://qrisorderkuota.hashnode.space)
 
 ---
 
