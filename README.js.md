@@ -168,7 +168,7 @@ main();
 
 ## Persyaratan Sistem
 
-- Node.js >= 12.0.0
+- Node.js >= 20.18.3
 - Dependencies:
   - qrcode: ^1.5.0
   - canvas: ^2.9.0
