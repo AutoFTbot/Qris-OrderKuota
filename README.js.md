@@ -1,6 +1,6 @@
 # QRIS Payment Package
 
-Package Node.js untuk generate QRIS dan cek status pembayaran.
+Package Node.js untuk generate QRIS, cek status pembayaran, dan generate PDF bukti transaksi (receipt) otomatis.
 
 ## Fitur
 
@@ -9,6 +9,7 @@ Package Node.js untuk generate QRIS dan cek status pembayaran.
 - Cek status pembayaran
 - Validasi format QRIS
 - Perhitungan checksum CRC16
+- Generate PDF bukti transaksi otomatis saat pembayaran sukses
 
 ## Instalasi
 
@@ -24,6 +25,7 @@ npm install qris-payment
 const QRISPayment = require('qris-payment');
 
 const config = {
+    storeName: 'NAMA TOKO ANDA', // Nama toko yang akan tampil di receipt
     merchantId: 'YOUR_MERCHANT_ID',
     apiKey: 'YOUR_API_KEY',
     baseQrString: 'YOUR_BASE_QR_STRING',
@@ -37,39 +39,59 @@ const qris = new QRISPayment(config);
 
 ```javascript
 async function generateQR() {
-    try {
-        const { qrString, qrBuffer } = await qris.generateQR(10000);
-        
-        // Simpan QR ke file
-        fs.writeFileSync('qr.png', qrBuffer);
-        console.log('QR String:', qrString);
-    } catch (error) {
-        console.error(error);
-    }
+    const { qrString, qrBuffer } = await qris.generateQR(10000);
+    // Simpan QR ke file
+    fs.writeFileSync('qr.png', qrBuffer);
+    console.log('QR String:', qrString);
 }
 ```
 
-### Cek Status Pembayaran
+### Cek Status Pembayaran Realtime (Polling)
 
 ```javascript
-async function checkPayment() {
-    try {
-        const result = await qris.checkPayment('REF123', 10000);
-        console.log('Status pembayaran:', result);
-    } catch (error) {
-        console.error(error);
+async function waitForPayment(reference, amount, maxAttempts = 30, interval = 10000) {
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        const result = await qris.checkPayment(reference, amount);
+        if (result.success && result.data.status === 'PAID') {
+            console.log('✓ Pembayaran berhasil!');
+            return result;
+        }
+        if (attempt < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, interval));
+        }
+    }
+    throw new Error('Pembayaran tidak diterima dalam waktu yang ditentukan.');
+}
+
+async function testRealtimePayment() {
+    const amount = 10000;
+    const { qrBuffer } = await qris.generateQR(amount);
+    fs.writeFileSync('test_qr.png', qrBuffer);
+    console.log('QR Code berhasil dibuat. Silakan scan dan lakukan pembayaran.');
+    const reference = 'TEST' + Date.now();
+    const paymentResult = await waitForPayment(reference, amount);
+    if (paymentResult.success && paymentResult.data.status === 'PAID') {
+        if (paymentResult.receipt) {
+            console.log('✓ Bukti transaksi berhasil dibuat:', paymentResult.receipt.filePath);
+        }
     }
 }
 ```
+
+### Receipt Otomatis
+- Receipt PDF akan otomatis dibuat saat status pembayaran menjadi PAID.
+- Path file receipt bisa diambil dari `paymentResult.receipt.filePath`.
+- Tidak perlu memanggil generateReceipt manual kecuali untuk kebutuhan khusus.
 
 ## Konfigurasi
 
-| Parameter | Tipe | Deskripsi |
-|-----------|------|-----------|
-| merchantId | string | ID Merchant QRIS |
-| apiKey | string | API Key untuk cek pembayaran |
-| baseQrString | string | String dasar QRIS |
-| logoPath | string | Path ke file logo (opsional) |
+| Parameter   | Tipe   | Deskripsi                                 |
+|-------------|--------|-------------------------------------------|
+| storeName   | string | Nama toko yang tampil di receipt           |
+| merchantId  | string | ID Merchant QRIS                          |
+| apiKey      | string | API Key untuk cek pembayaran               |
+| baseQrString| string | String dasar QRIS                         |
+| logoPath    | string | Path ke file logo (opsional)               |
 
 ## Response
 
@@ -94,6 +116,11 @@ async function checkPayment() {
         date?: string, // Hanya jika status PAID
         brand_name?: string, // Hanya jika status PAID
         buyer_reff?: string // Hanya jika status PAID
+    },
+    receipt?: {
+        success: true,
+        filePath: string,
+        fileName: string
     }
 }
 ```
@@ -101,7 +128,6 @@ async function checkPayment() {
 ## Error Handling
 
 Package ini akan melempar error dengan pesan yang jelas jika terjadi masalah:
-
 - Format QRIS tidak valid
 - Gagal generate QR
 - Gagal cek status pembayaran
@@ -115,6 +141,7 @@ const QRISPayment = require('qris-payment');
 const fs = require('fs');
 
 const config = {
+    storeName: 'NAMA TOKO ANDA',
     merchantId: 'YOUR_MERCHANT_ID',
     apiKey: 'YOUR_API_KEY',
     baseQrString: 'YOUR_BASE_QR_STRING',
@@ -124,17 +151,15 @@ const config = {
 const qris = new QRISPayment(config);
 
 async function main() {
-    try {
-        // Generate QR
-        const { qrString, qrBuffer } = await qris.generateQR(10000);
-        fs.writeFileSync('qr.png', qrBuffer);
-        console.log('QR String:', qrString);
-
-        // Cek pembayaran
-        const result = await qris.checkPayment('REF123', 10000);
-        console.log('Status pembayaran:', result);
-    } catch (error) {
-        console.error('Error:', error.message);
+    const amount = 10000;
+    const { qrBuffer } = await qris.generateQR(amount);
+    fs.writeFileSync('qr.png', qrBuffer);
+    const reference = 'REF' + Date.now();
+    const paymentResult = await waitForPayment(reference, amount);
+    if (paymentResult.success && paymentResult.data.status === 'PAID') {
+        if (paymentResult.receipt) {
+            console.log('✓ Bukti transaksi berhasil dibuat:', paymentResult.receipt.filePath);
+        }
     }
 }
 
@@ -148,6 +173,8 @@ main();
   - qrcode: ^1.5.0
   - canvas: ^2.9.0
   - axios: ^1.3.0
+  - pdfkit: ^0.13.0
+  - moment: ^2.29.4
 
 ## Lisensi
 
