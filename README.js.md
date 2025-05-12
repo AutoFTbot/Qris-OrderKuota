@@ -10,6 +10,10 @@ Package Node.js untuk generate QRIS, cek status pembayaran, dan generate PDF buk
 - Validasi format QRIS
 - Perhitungan checksum CRC16
 - Generate PDF bukti transaksi otomatis saat pembayaran sukses
+  
+## Contoh Output Receipt
+
+<img src="https://raw.githubusercontent.com/AutoFTbot/Qris-OrderKuota/refs/heads/main/img/buktitrx.jpg" width="250" alt="Contoh Receipt QRIS" />
 
 ## Instalasi
 
@@ -141,25 +145,58 @@ const QRISPayment = require('qris-payment');
 const fs = require('fs');
 
 const config = {
-    storeName: 'NAMA TOKO ANDA',
-    merchantId: 'YOUR_MERCHANT_ID',
-    apiKey: 'YOUR_API_KEY',
-    baseQrString: 'YOUR_BASE_QR_STRING',
-    logoPath: 'path/to/logo.png'
+    storeName: 'AGIN STORE',
+    merchantId: '#',
+    apiKey: '#',
+    baseQrString: '#',
+    logoPath: 'https://i.ibb.co/0r00000/logo-agin.png'
 };
 
 const qris = new QRISPayment(config);
 
 async function main() {
-    const amount = 10000;
-    const { qrBuffer } = await qris.generateQR(amount);
-    fs.writeFileSync('qr.png', qrBuffer);
-    const reference = 'REF' + Date.now();
-    const paymentResult = await waitForPayment(reference, amount);
-    if (paymentResult.success && paymentResult.data.status === 'PAID') {
-        if (paymentResult.receipt) {
-            console.log('✓ Bukti transaksi berhasil dibuat:', paymentResult.receipt.filePath);
+    try {
+        console.log('=== TEST REALTIME QRIS PAYMENT ===\n');
+        const randomAmount = Math.floor(Math.random() * 99) + 1; // Random 1-99
+        const amount = 100 + randomAmount; // Base 100 + random amount
+        const reference = 'REF' + Date.now();
+        
+        // Generate QR code
+        const { qrBuffer } = await qris.generateQR(amount);
+        
+        // Save QR code image
+        fs.writeFileSync('qr.png', qrBuffer);
+        
+        console.log('=== TRANSACTION DETAILS ===');
+        console.log('Reference:', reference);
+        console.log('Amount:', amount);
+        console.log('QR Image:', 'qr.png');
+        console.log('\nSilakan scan QR code dan lakukan pembayaran');
+        console.log('\nMenunggu pembayaran...\n');
+
+        // Check payment status with 5 minutes timeout
+        const startTime = Date.now();
+        const timeout = 5 * 60 * 1000;
+
+        while (Date.now() - startTime < timeout) {
+            const result = await qris.checkPayment(reference, amount);
+            
+            if (result.success && result.data.status === 'PAID') {
+                console.log('✓ Pembayaran berhasil!');
+                if (result.receipt) {
+                    console.log('✓ Bukti transaksi:', result.receipt.filePath);
+                }
+                return;
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            console.log('Menunggu pembayaran...');
         }
+
+        throw new Error('Timeout: Pembayaran tidak diterima dalam 5 menit');
+        
+    } catch (error) {
+        console.error('Error:', error.message);
     }
 }
 
