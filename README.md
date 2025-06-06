@@ -15,6 +15,9 @@
   <a href="https://pypi.org/project/qris-payment/">
     <img src="https://img.shields.io/pypi/v/qris-payment?style=for-the-badge&logo=python&color=blue" />
   </a>
+  <a href="https://pkg.go.dev/github.com/AutoFTbot/OrderKuota-go">
+    <img src="https://img.shields.io/badge/Go-1.0.0-blue?style=for-the-badge&logo=go" />
+  </a>
   <img src="https://img.shields.io/github/license/AutoFTbot/Qris-OrderKuota?style=for-the-badge&color=orange&cacheSeconds=1" />
   <img src="https://img.shields.io/github/stars/AutoFTbot/Qris-OrderKuota?style=for-the-badge&logo=github" />
   <img src="https://img.shields.io/github/forks/AutoFTbot/Qris-OrderKuota?style=for-the-badge&logo=github" />
@@ -55,8 +58,9 @@ Untuk menggunakan package ini, kamu membutuhkan **QR base string** dari QRIS. Ik
 
 | Bahasa                  | Link                     |
 |-------------------------|--------------------------|
-| 🟨 JavaScript (Node.js) | [`README.js.md`](README.js.md) |
-| 🐍 Python               | [`README.py.md`](README.py.md) |
+| <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" width="20" height="20"/> JavaScript (Node.js) | [`README.js.md`](README.js.md) |
+| <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" width="20" height="20"/> Python               | [`README.py.md`](README.py.md) |
+| <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/go/go-original.svg" width="20" height="20"/> Go                   | [`README.go.md`](README.go.md) |
 
 > 📖 Atau kunjungi dokumentasi lengkap di:  
 > 👉 [https://qrisorderkuota.hashnode.space](https://qrisorderkuota.hashnode.space)
