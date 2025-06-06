@@ -95,7 +95,9 @@ Untuk menggunakan package ini, kamu membutuhkan **QR base string** dari QRIS. Ik
 > 👉 [https://qrisorderkuota.hashnode.space](https://qrisorderkuota.hashnode.space)
 
 ---
+## Star History
 
+[![Star History Chart](https://api.star-history.com/svg?repos=AutoFTbot/Qris-OrderKuota&type=Date)](https://www.star-history.com/#AutoFTbot/Qris-OrderKuota&Date)
 ## ❤️ Dukungan
 
 Jika kamu suka proyek ini dan ingin mendukung pengembangannya, kamu bisa:
