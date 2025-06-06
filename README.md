@@ -107,7 +107,7 @@ Jika kamu suka proyek ini dan ingin mendukung pengembangannya, kamu bisa:
 - 💰 Donasi melalui QRIS berikut:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/AutoFTbot/AutoFTbot/refs/heads/main/assets/QRIS.jpg" alt="Donasi via QRIS" width="300"/>
+  <img src="https://raw.githubusercontent.com/AutoFTbot/AutoFTbot/refs/heads/main/qris.png" alt="Donasi via QRIS" width="300"/>
 </p>
 
 ---
