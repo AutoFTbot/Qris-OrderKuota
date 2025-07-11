@@ -1,16 +1,18 @@
-# QRIS Payment Package
+# qris-payment
 
-Package Node.js untuk generate QRIS, cek status pembayaran, dan generate PDF bukti transaksi (receipt) otomatis.
+Node.js package untuk generate QRIS, cek status pembayaran, dan otomatis generate PDF receipt menggunakan API OrderKuota.
+
+[![npm version](https://badge.fury.io/js/qris-payment.svg)](https://badge.fury.io/js/qris-payment)
+[![Downloads](https://img.shields.io/npm/dw/qris-payment.svg)](https://www.npmjs.com/package/qris-payment)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Fitur
 
 - Generate QRIS dengan nominal tertentu
 - Tambah logo di tengah QR
-- Cek status pembayaran
-- Validasi format QRIS
-- Perhitungan checksum CRC16
+- Cek status pembayaran (realtime polling) menggunakan API OrderKuota
 - Generate PDF bukti transaksi otomatis saat pembayaran sukses
-  
+
 ## Contoh Output Receipt
 
 <img src="https://raw.githubusercontent.com/AutoFTbot/Qris-OrderKuota/refs/heads/main/img/buktitrx.jpg" width="250" alt="Contoh Receipt QRIS" />
@@ -21,135 +23,19 @@ Package Node.js untuk generate QRIS, cek status pembayaran, dan generate PDF buk
 npm install qris-payment
 ```
 
-## Penggunaan
-
-### Inisialisasi
-
-```javascript
-const QRISPayment = require('qris-payment');
-
-const config = {
-    storeName: 'NAMA TOKO ANDA', // Nama toko yang akan tampil di receipt
-    merchantId: 'YOUR_MERCHANT_ID',
-    apiKey: 'YOUR_API_KEY',
-    baseQrString: 'YOUR_BASE_QR_STRING',
-    logoPath: 'path/to/logo.png' // Opsional
-};
-
-const qris = new QRISPayment(config);
-```
-
-### Generate QRIS
-
-```javascript
-async function generateQR() {
-    const { qrString, qrBuffer } = await qris.generateQR(10000);
-    // Simpan QR ke file
-    fs.writeFileSync('qr.png', qrBuffer);
-    console.log('QR String:', qrString);
-}
-```
-
-### Cek Status Pembayaran Realtime (Polling)
-
-```javascript
-async function waitForPayment(reference, amount, maxAttempts = 30, interval = 10000) {
-    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-        const result = await qris.checkPayment(reference, amount);
-        if (result.success && result.data.status === 'PAID') {
-            console.log('✓ Pembayaran berhasil!');
-            return result;
-        }
-        if (attempt < maxAttempts) {
-            await new Promise(resolve => setTimeout(resolve, interval));
-        }
-    }
-    throw new Error('Pembayaran tidak diterima dalam waktu yang ditentukan.');
-}
-
-async function testRealtimePayment() {
-    const amount = 10000;
-    const { qrBuffer } = await qris.generateQR(amount);
-    fs.writeFileSync('test_qr.png', qrBuffer);
-    console.log('QR Code berhasil dibuat. Silakan scan dan lakukan pembayaran.');
-    const reference = 'TEST' + Date.now();
-    const paymentResult = await waitForPayment(reference, amount);
-    if (paymentResult.success && paymentResult.data.status === 'PAID') {
-        if (paymentResult.receipt) {
-            console.log('✓ Bukti transaksi berhasil dibuat:', paymentResult.receipt.filePath);
-        }
-    }
-}
-```
-
-### Receipt Otomatis
-- Receipt PDF akan otomatis dibuat saat status pembayaran menjadi PAID.
-- Path file receipt bisa diambil dari `paymentResult.receipt.filePath`.
-- Tidak perlu memanggil generateReceipt manual kecuali untuk kebutuhan khusus.
-
-## Konfigurasi
-
-| Parameter   | Tipe   | Deskripsi                                 |
-|-------------|--------|-------------------------------------------|
-| storeName   | string | Nama toko yang tampil di receipt           |
-| merchantId  | string | ID Merchant QRIS                          |
-| apiKey      | string | API Key untuk cek pembayaran               |
-| baseQrString| string | String dasar QRIS                         |
-| logoPath    | string | Path ke file logo (opsional)               |
-
-## Response
-
-### Generate QR
-
-```javascript
-{
-    qrString: "000201010212...", // String QRIS
-    qrBuffer: <Buffer ...> // Buffer gambar QR
-}
-```
-
-### Cek Pembayaran
-
-```javascript
-{
-    success: true,
-    data: {
-        status: 'PAID' | 'UNPAID',
-        amount: number,
-        reference: string,
-        date?: string, // Hanya jika status PAID
-        brand_name?: string, // Hanya jika status PAID
-        buyer_reff?: string // Hanya jika status PAID
-    },
-    receipt?: {
-        success: true,
-        filePath: string,
-        fileName: string
-    }
-}
-```
-
-## Error Handling
-
-Package ini akan melempar error dengan pesan yang jelas jika terjadi masalah:
-- Format QRIS tidak valid
-- Gagal generate QR
-- Gagal cek status pembayaran
-- API key tidak valid
-- dll
-
-## Contoh Lengkap
+## Penggunaan Singkat
 
 ```javascript
 const QRISPayment = require('qris-payment');
 const fs = require('fs');
 
 const config = {
-    storeName: 'AGIN STORE',
-    merchantId: '#',
-    apiKey: '#',
-    baseQrString: '#',
-    logoPath: 'https://i.ibb.co/0r00000/logo-agin.png'
+    storeName: '#', //Nama Store Kalian
+    merchant: '#', //merchatID
+    auth_username: '#', //Username OrderKuota
+    auth_token: '#', //Token OrderKuota
+    baseQrString: '#', //StringQris
+    logoPath: './logo-agin.png' //Opsional
 };
 
 const qris = new QRISPayment(config);
@@ -203,24 +89,39 @@ async function main() {
 main();
 ```
 
-## Persyaratan Sistem
+## Konfigurasi API
 
-- Node.js >= 20.18.3
-- Dependencies:
-  - qrcode: ^1.5.0
-  - canvas: ^2.9.0
-  - axios: ^1.3.0
-  - pdfkit: ^0.13.0
-  - moment: ^2.29.4
+Package ini menggunakan API OrderKuota untuk cek status pembayaran. Pastikan Anda memiliki:
 
-## Lisensi
+- `merchant`: ID merchant dari OrderKuota
+- `auth_username`: Username autentikasi
+- `auth_token`: Token autentikasi
 
-MIT
+**Untuk mendapatkan kredensial API, hubungi [@AutoFtBot69](https://t.me/AutoFtBot69)**
+
+## FAQ
+
+**Q: Apakah receipt bisa custom logo dan nama toko?**  
+A: Bisa, cukup atur `logoPath` dan `storeName` di config.
+
+**Q: Apakah receipt otomatis dibuat saat pembayaran sukses?**  
+A: Ya, receipt PDF otomatis dibuat dan path-nya bisa diambil dari `paymentResult.receipt.filePath`.
+
+**Q: Apakah bisa polling pembayaran lebih cepat/lebih lama?**  
+A: Bisa, atur parameter `interval` dan `maxAttempts` pada fungsi polling.
+
+**Q: Bagaimana cara mendapatkan kredensial API OrderKuota?**  
+A: Hubungi [@AutoFtBot69](https://t.me/AutoFtBot69) untuk mendapatkan merchant ID, username, dan token autentikasi.
 
 ## Kontribusi
 
-Silakan buat pull request untuk kontribusi. Untuk perubahan besar, buka issue terlebih dahulu untuk mendiskusikan perubahan yang diinginkan.
+Pull request sangat diterima!  
+Buka issue untuk diskusi fitur/bug sebelum submit PR.
 
 ## Support
 
-Jika menemukan masalah atau memiliki pertanyaan, silakan buka issue di repository ini. 
+Jika ada pertanyaan, silakan buka [issue di GitHub](https://github.com/AutoFTbot/Qris-OrderKuota/issues)
+
+## License
+
+MIT
