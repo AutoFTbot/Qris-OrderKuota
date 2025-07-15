@@ -30,12 +30,11 @@ const QRISPayment = require('autoft-qris');
 const fs = require('fs');
 
 const config = {
-    storeName: '#', //Nama Store Kalian
-    merchantId: '#', //ID Merchant
-    auth_username: '#', //Username OrderKuota
-    auth_token: '#', //Token OrderKuota
-    baseQrString: '#', //StringQris
-    logoPath: './logo-agin.png' //Opsional
+    storeName: 'Nama Toko Contoh', // Nama toko
+    auth_username: '#', // Username OrderKuota
+    auth_token: '#', // Token OrderKuota
+    baseQrString: '#', // String QRIS statis
+    logoPath: './logo-agin.png' // Opsional, path logo
 };
 
 const qris = new QRISPayment(config);
@@ -46,27 +45,18 @@ async function main() {
         const randomAmount = Math.floor(Math.random() * 99) + 1; // Random 1-99
         const amount = 100 + randomAmount; // Base 100 + random amount
         const reference = 'REF' + Date.now();
-        
-        // Generate QR code
         const { qrBuffer } = await qris.generateQR(amount);
-        
-        // Save QR code image
-        fs.writeFileSync('qr.png', qrBuffer);
-        
+        fs.writeFileSync('qr.png', qrBuffer);      
         console.log('=== TRANSACTION DETAILS ===');
         console.log('Reference:', reference);
         console.log('Amount:', amount);
         console.log('QR Image:', 'qr.png');
         console.log('\nSilakan scan QR code dan lakukan pembayaran');
         console.log('\nMenunggu pembayaran...\n');
-
-        // Check payment status with 5 minutes timeout
         const startTime = Date.now();
         const timeout = 5 * 60 * 1000;
-
         while (Date.now() - startTime < timeout) {
             const result = await qris.checkPayment(reference, amount);
-            
             if (result.success && result.data.status === 'PAID') {
                 console.log('✓ Pembayaran berhasil!');
                 if (result.receipt) {
@@ -74,18 +64,14 @@ async function main() {
                 }
                 return;
             }
-
             await new Promise(resolve => setTimeout(resolve, 3000));
             console.log('Menunggu pembayaran...');
         }
-
         throw new Error('Timeout: Pembayaran tidak diterima dalam 5 menit');
-        
     } catch (error) {
         console.error('Error:', error.message);
     }
 }
-
 main();
 ```
 
