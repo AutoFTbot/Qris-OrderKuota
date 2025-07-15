@@ -26,7 +26,7 @@ npm install autoft-qris
 ## Penggunaan Singkat
 
 ```javascript
-const QRISPayment = require('autoft-qriss');
+const QRISPayment = require('autoft-qris');
 const fs = require('fs');
 
 const config = {
