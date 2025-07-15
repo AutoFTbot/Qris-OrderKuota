@@ -31,6 +31,7 @@ const fs = require('fs');
 
 const config = {
     storeName: '#', //Nama Store Kalian
+    merchantId: '#', //ID Merchant
     auth_username: '#', //Username OrderKuota
     auth_token: '#', //Token OrderKuota
     baseQrString: '#', //StringQris
