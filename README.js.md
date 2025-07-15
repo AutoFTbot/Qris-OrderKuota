@@ -20,18 +20,17 @@ Node.js package untuk generate QRIS, cek status pembayaran, dan otomatis generat
 ## Instalasi
 
 ```bash
-npm install qris-payment
+npm install autoft-qris
 ```
 
 ## Penggunaan Singkat
 
 ```javascript
-const QRISPayment = require('qris-payment');
+const QRISPayment = require('autoft-qriss');
 const fs = require('fs');
 
 const config = {
     storeName: '#', //Nama Store Kalian
-    merchant: '#', //merchatID
     auth_username: '#', //Username OrderKuota
     auth_token: '#', //Token OrderKuota
     baseQrString: '#', //StringQris
@@ -93,7 +92,6 @@ main();
 
 Package ini menggunakan API OrderKuota untuk cek status pembayaran. Pastikan Anda memiliki:
 
-- `merchant`: ID merchant dari OrderKuota
 - `auth_username`: Username autentikasi
 - `auth_token`: Token autentikasi
 
@@ -111,7 +109,7 @@ A: Ya, receipt PDF otomatis dibuat dan path-nya bisa diambil dari `paymentResult
 A: Bisa, atur parameter `interval` dan `maxAttempts` pada fungsi polling.
 
 **Q: Bagaimana cara mendapatkan kredensial API OrderKuota?**  
-A: Hubungi [@AutoFtBot69](https://t.me/AutoFtBot69) untuk mendapatkan merchant ID, username, dan token autentikasi.
+A: Hubungi [@AutoFtBot69](https://t.me/AutoFtBot69) untuk mendapatkan username dan token autentikasi.
 
 ## Kontribusi
 
