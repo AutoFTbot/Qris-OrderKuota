@@ -1,22 +1,38 @@
 # QRIS Payment Python Package
 
-Package Python untuk generate QRIS dan cek status pembayaran.
+Package Python untuk generate QRIS dan cek status pembayaran dengan fitur monitoring realtime.
 
-## Fitur
+## 🚀 Fitur Terbaru (v1.1.3)
 
-- Generate QRIS dengan nominal tertentu
-- Tambah logo di tengah QR
-- Cek status pembayaran
-- Validasi format QRIS
-- Perhitungan checksum CRC16
+- ✅ **Generate QRIS** dengan nominal tertentu
+- ✅ **Tambah logo** di tengah QR
+- ✅ **Cek status pembayaran** realtime
+- ✅ **Filter waktu 10 menit** (lebih fleksibel)
+- ✅ **Debug mode** untuk monitoring detail
+- ✅ **Validasi format QRIS** yang robust
+- ✅ **Perhitungan checksum CRC16**
+- ✅ **Error handling** yang informatif
+- ✅ **Type hints** untuk development yang lebih baik
 
-## Instalasi
+## 📦 Instalasi
 
 ```bash
-pip install qris-payment
+pip install qris-payment==1.1.3
 ```
 
-## Penggunaan
+## 🔑 Cara Mendapatkan Auth Token
+
+Untuk mendapatkan `auth_username` dan `auth_token`, hubungi bot Telegram:
+
+**@AutoFtBot** - Bot resmi untuk mendapatkan kredensial QRIS Payment
+
+### Langkah-langkah:
+1. Buka Telegram dan cari **@AutoFtBot**
+2. Kirim pesan `/start`
+3. Ikuti instruksi untuk mendapatkan kredensial
+4. Bot akan memberikan `auth_username` dan `auth_token`
+
+## 🛠️ Penggunaan
 
 ### Inisialisasi
 
@@ -24,9 +40,8 @@ pip install qris-payment
 from qris_payment import QRISPayment
 
 config = {
-    'merchantId': 'YOUR_MERCHANT_ID',
-    'auth_username': 'YOUR_AUTH_USERNAME',
-    'auth_token': 'YOUR_AUTH_TOKEN',
+    'auth_username': 'YOUR_AUTH_USERNAME',  # Dapat dari @AutoFtBot
+    'auth_token': 'YOUR_AUTH_TOKEN',        # Dapat dari @AutoFtBot
     'base_qr_string': 'YOUR_BASE_QR_STRING',
     'logo_path': 'path/to/logo.png'  # Opsional
 }
@@ -53,30 +68,44 @@ def generate_qr():
 ```python
 def check_payment():
     try:
+        # Reference tidak dipakai untuk pengecekan, hanya amount
         result = qris.check_payment('REF123', 10000)
         print('Status pembayaran:', result)
     except Exception as e:
         print(f"Error: {str(e)}")
 ```
 
-## Konfigurasi
+### Debug Mode
+
+```python
+# Untuk monitoring detail proses pengecekan
+from qris_payment.payment_checker import PaymentChecker
+
+checker = PaymentChecker({
+    'auth_username': 'YOUR_AUTH_USERNAME',
+    'auth_token': 'YOUR_AUTH_TOKEN'
+}, debug=True)
+
+result = checker.check_payment_status(None, 10000)
+```
+
+## 📋 Konfigurasi
 
 | Parameter | Tipe | Deskripsi | Wajib |
 |-----------|------|-----------|-------|
-| merchantId | string | ID Merchant QRIS | Ya |
-| auth_username | string | Username untuk autentikasi API | Ya |
-| auth_token | string | Token untuk autentikasi API | Ya |
+| auth_username | string | Username dari @AutoFtBot | Ya |
+| auth_token | string | Token dari @AutoFtBot | Ya |
 | base_qr_string | string | String dasar QRIS | Ya |
 | logo_path | string | Path ke file logo (opsional) | Tidak |
 
-## Response
+## 📊 Response
 
 ### Generate QR
 
 ```python
 {
-    'qr_string': "000201010212...",  # String QRIS
-    'qr_image': <PIL.Image.Image>  # Objek gambar QR
+    'qr_string': "000201010212...",  # String QRIS dengan checksum
+    'qr_image': <PIL.Image.Image>    # Objek gambar QR
 }
 ```
 
@@ -88,73 +117,105 @@ def check_payment():
     'data': {
         'status': 'PAID' | 'UNPAID',
         'amount': int,
-        'reference': str,
-        'date': str,  # Hanya jika status PAID
+        'date': str,        # Hanya jika status PAID
         'brand_name': str,  # Hanya jika status PAID
-        'buyer_reff': str  # Hanya jika status PAID
+        'buyer_reff': str   # Hanya jika status PAID
     }
 }
 ```
 
-## Error Handling
-
-Package ini akan melempar exception dengan pesan yang jelas jika terjadi masalah:
-
-- Format QRIS tidak valid
-- Gagal generate QR
-- Gagal cek status pembayaran
-- Merchant ID tidak valid
-- Auth username atau token tidak valid
-- dll
-
-## Contoh Lengkap
+## ⚡ Contoh Realtime Payment
 
 ```python
+import time
+import random
 from qris_payment import QRISPayment
 
 config = {
-    'merchantId': 'YOUR_MERCHANT_ID',
     'auth_username': 'YOUR_AUTH_USERNAME',
     'auth_token': 'YOUR_AUTH_TOKEN',
     'base_qr_string': 'YOUR_BASE_QR_STRING',
-    'logo_path': 'path/to/logo.png'
+    'logo_path': './logo.png'
 }
 
-qris = QRISPayment(config)
+def realtime_payment_test():
+    qris = QRISPayment(config)
+    
+    # Generate QR dengan nominal random
+    amount = 100 + random.randint(1, 99)
+    result = qris.generate_qr(amount)
+    result['qr_image'].save('qr.png')
+    
+    print(f'Amount: {amount}')
+    print('QR saved as: qr.png')
+    print('Silakan scan dan transfer tepat Rp', amount)
+    
+    # Monitor pembayaran (10 menit terakhir)
+    start_time = time.time()
+    while time.time() - start_time < 300:  # 5 menit timeout
+        payment_result = qris.check_payment('REF', amount)
+        if payment_result['success'] and payment_result['data']['status'] == 'PAID':
+            print('🎉 Pembayaran berhasil!')
+            print('Detail:', payment_result['data'])
+            return
+        time.sleep(3)
+        print('Menunggu pembayaran...')
+    
+    print('Timeout: Pembayaran tidak diterima')
 
-def main():
-    try:
-        # Generate QR
-        result = qris.generate_qr(10000)
-        result['qr_image'].save('qr.png')
-        print('QR String:', result['qr_string'])
-
-        # Cek pembayaran
-        payment_result = qris.check_payment('REF123', 10000)
-        print('Status pembayaran:', payment_result)
-    except Exception as e:
-        print(f"Error: {str(e)}")
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    realtime_payment_test()
 ```
 
-## Persyaratan Sistem
+## 🔍 Error Handling
 
-- Python >= 3.6
-- Dependencies:
+Package ini akan melempar exception dengan pesan yang jelas:
+
+- **Format QRIS tidak valid** - Pastikan base_qr_string mengandung "5802ID"
+- **Nominal harus > 0** - Amount harus positif
+- **Auth credentials tidak valid** - Cek username dan token dari @AutoFtBot
+- **API tidak dapat diakses** - Cek koneksi internet
+- **Response tidak valid** - Ada masalah dengan server API
+
+## 📝 Changelog
+
+### v1.1.3 (Latest)
+- ✅ Filter waktu diperpanjang dari 5 menit ke 10 menit
+- ✅ Debug mode untuk monitoring detail
+- ✅ Error handling yang lebih robust
+- ✅ Type hints untuk development
+- ✅ Dokumentasi yang lebih lengkap
+
+### v1.1.2
+- Perbaikan bug minor
+- Optimasi performa
+
+### v1.1.1
+- Fitur QRIS generation
+- Payment checking
+
+## 🖥️ Persyaratan Sistem
+
+- **Python** >= 3.6
+- **Dependencies:**
   - qrcode >= 7.4.2
   - Pillow >= 9.0.0
   - requests >= 2.28.0
 
-## Lisensi
+## 📞 Support
 
-MIT
+- **Bot Telegram:** @AutoFtBot (untuk kredensial)
+- **Repository:** [GitHub](https://github.com/AutoFtBot/qris-payment-py)
+- **Email:** autoftbot@gmail.com
 
-## Kontribusi
+## 📄 Lisensi
+
+MIT License
+
+## 🤝 Kontribusi
 
 Silakan buat pull request untuk kontribusi. Untuk perubahan besar, buka issue terlebih dahulu untuk mendiskusikan perubahan yang diinginkan.
 
-## Support
+---
 
-Jika menemukan masalah atau memiliki pertanyaan, silakan buka issue di repository ini. 
+**Dibuat dengan ❤️ oleh AutoFtBot Team** 
