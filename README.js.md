@@ -82,7 +82,7 @@ Package ini menggunakan API OrderKuota untuk cek status pembayaran. Pastikan And
 - `auth_username`: Username autentikasi
 - `auth_token`: Token autentikasi
 
-**Untuk mendapatkan kredensial API, hubungi [@AutoFtBot69](https://t.me/AutoFtBot69)**
+**Untuk mendapatkan kredensial API, hubungi [@AutoFtBot69](https://t.me/AuutooFtBot)**
 
 ## FAQ
 
