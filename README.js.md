@@ -96,7 +96,7 @@ A: Ya, receipt PDF otomatis dibuat dan path-nya bisa diambil dari `paymentResult
 A: Bisa, atur parameter `interval` dan `maxAttempts` pada fungsi polling.
 
 **Q: Bagaimana cara mendapatkan kredensial API OrderKuota?**  
-A: Hubungi [@AutoFtBot69](https://t.me/AutoFtBot69) untuk mendapatkan username dan token autentikasi.
+A: Hubungi [@AutoFtBot69](https://t.me/AuutooFtBot) untuk mendapatkan username dan token autentikasi.
 
 ## Kontribusi
 
