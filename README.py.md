@@ -27,7 +27,7 @@ Untuk mendapatkan `auth_username` dan `auth_token`, hubungi bot Telegram:
 **@AutoFtBot** - Bot resmi untuk mendapatkan kredensial QRIS Payment
 
 ### Langkah-langkah:
-1. Buka Telegram dan cari **@AutoFtBot**
+1. Buka Telegram dan cari **@AuutooFtBot**
 2. Kirim pesan `/start`
 3. Ikuti instruksi untuk mendapatkan kredensial
 4. Bot akan memberikan `auth_username` dan `auth_token`
