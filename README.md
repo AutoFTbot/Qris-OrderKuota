@@ -92,7 +92,7 @@ Untuk menggunakan package ini, kamu membutuhkan **QR base string** dari QRIS. Ik
 </div>
 
 > 📖 **Dokumentasi Lengkap:**  
-> 👉 [https://qrisorderkuota.hashnode.space](https://qrisorderkuota.hashnode.space)
+> 👉 [https://orkut.fightertunnel.net](https://orkut.fightertunnel.net)
 
 ---
 ## Star History
