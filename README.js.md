@@ -11,6 +11,7 @@ Node.js package untuk generate QRIS, cek status pembayaran, dan otomatis generat
 - Generate QRIS dengan nominal tertentu
 - Tambah logo di tengah QR
 - Cek status pembayaran (realtime polling) menggunakan API OrderKuota
+- Cek saldo API akun (endpoint saldo)
 - Generate PDF bukti transaksi otomatis saat pembayaran sukses
 
 ## Contoh Output Receipt
@@ -75,6 +76,18 @@ async function main() {
 main();
 ```
 
+## Cek Saldo
+
+Anda dapat mengecek saldo akun API yang sama dengan kredensial `auth_username` dan `auth_token` yang sudah dipakai.
+
+```javascript
+const qris = new QRISPayment(config);
+const saldo = await qris.checkSaldo();
+if (saldo.success) {
+  console.log('Saldo:', saldo.data.saldo);
+}
+```
+
 ## Konfigurasi API
 
 Package ini menggunakan API OrderKuota untuk cek status pembayaran. Pastikan Anda memiliki:
@@ -82,7 +95,7 @@ Package ini menggunakan API OrderKuota untuk cek status pembayaran. Pastikan And
 - `auth_username`: Username autentikasi
 - `auth_token`: Token autentikasi
 
-**Untuk mendapatkan kredensial API, hubungi [@AutoFtBot69](https://t.me/AuutooFtBot)**
+**Untuk mendapatkan kredensial API, hubungi [@AutoFtBot69](https://t.me/AutoFtBot69)**
 
 ## FAQ
 
@@ -96,7 +109,7 @@ A: Ya, receipt PDF otomatis dibuat dan path-nya bisa diambil dari `paymentResult
 A: Bisa, atur parameter `interval` dan `maxAttempts` pada fungsi polling.
 
 **Q: Bagaimana cara mendapatkan kredensial API OrderKuota?**  
-A: Hubungi [@AutoFtBot69](https://t.me/AuutooFtBot) untuk mendapatkan username dan token autentikasi.
+A: Hubungi [@AutoFtBot69](https://t.me/AutoFtBot69) untuk mendapatkan username dan token autentikasi.
 
 ## Kontribusi
 
