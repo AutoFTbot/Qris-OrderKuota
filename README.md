@@ -92,7 +92,7 @@ Untuk menggunakan package ini, kamu membutuhkan **QR base string** dari QRIS. Ik
 </div>
 
 > 📖 **Dokumentasi Lengkap:**  
-> 👉 [https://orkut.fightertunnel.net](https://orkut.fightertunnel.net)
+> 👉 [https://orkut.ftvpn.me](https://orkut.ftvpn.me)
 
 ---
 ## Star History
