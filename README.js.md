@@ -2,13 +2,14 @@
 
 Node.js package untuk generate QRIS, cek status pembayaran, dan otomatis generate PDF receipt menggunakan API OrderKuota.
 
-[![npm version](https://badge.fury.io/js/qris-payment.svg)](https://badge.fury.io/js/qris-payment)
-[![Downloads](https://img.shields.io/npm/dw/qris-payment.svg)](https://www.npmjs.com/package/qris-payment)
+[![npm version](https://badge.fury.io/js/autoft-qris.svg)](https://badge.fury.io/js/autoft-qris)
+[![Downloads](https://img.shields.io/npm/dw/autoft-qris.svg)](https://www.npmjs.com/package/autoft-qris)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Fitur
 
 - Generate QRIS dengan nominal tertentu
+- **2 Tema QRIS**: Tema (default) dan Tema style Meta
 - Tambah logo di tengah QR
 - Cek status pembayaran (realtime polling) menggunakan API OrderKuota
 - Cek saldo API akun (endpoint saldo)
@@ -24,7 +25,50 @@ Node.js package untuk generate QRIS, cek status pembayaran, dan otomatis generat
 npm install autoft-qris
 ```
 
-## Penggunaan Singkat
+## Penggunaan dengan Tema
+
+### Tema yang Tersedia
+
+1. **Tema 1 (Default)**: QRIS dengan aksen warna biru
+2. **Tema 2 (Meta)**: QRIS dengan aksen warna hijau
+
+### Contoh Penggunaan Tema
+
+```javascript
+const { QRISGenerator } = require('autoft-qris');
+const fs = require('fs');
+
+// Konfigurasi
+const config = {
+    storeName: 'Nama Toko Contoh', // Nama toko
+    auth_username: '#', // Username OrderKuota
+    auth_token: '#', // Token OrderKuota
+    baseQrString: '#', // String QRIS statis
+    logoPath: './logo-agin.png' // Opsional, path logo
+};
+
+// Tema 1
+const qrGenerator1 = new QRISGenerator(config, 'theme1');
+const qrString1 = qrGenerator1.generateQrString(50000);
+const qrBuffer1 = await qrGenerator1.generateQRWithLogo(qrString1);
+fs.writeFileSync('qris-theme1.png', qrBuffer1);
+
+// Tema 2
+const qrGenerator2 = new QRISGenerator(config, 'theme2');
+const qrString2 = qrGenerator2.generateQrString(50000);
+const qrBuffer2 = await qrGenerator2.generateQRWithLogo(qrString2);
+fs.writeFileSync('qris-theme2.png', qrBuffer2);
+
+// Ganti tema dinamis
+const qrGenerator = new QRISGenerator(config, 'theme1');
+qrGenerator.setTheme('theme2'); // Ganti ke tema hijau
+
+// Lihat tema yang tersedia
+const themes = QRISGenerator.getAvailableThemes();
+console.log(themes);
+```
+
+## Penggunaan Singkat (Legacy)
 
 ```javascript
 const QRISPayment = require('autoft-qris');
@@ -79,6 +123,19 @@ main();
 ## Cek Saldo
 
 Anda dapat mengecek saldo akun API yang sama dengan kredensial `auth_username` dan `auth_token` yang sudah dipakai.
+
+Contoh lewat curl:
+
+```bash
+curl -X POST "https://orkut.ftvpn.me/api/saldo" \
+   -H "Content-Type: application/json" \
+   -d '{
+     "auth_username": "demo_user",
+     "auth_token": "demo_token_123"
+   }'
+```
+
+Contoh lewat kode:
 
 ```javascript
 const qris = new QRISPayment(config);
