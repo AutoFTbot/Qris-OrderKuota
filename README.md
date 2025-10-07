@@ -79,6 +79,20 @@ Untuk menggunakan package ini, kamu membutuhkan **QR base string** dari QRIS. Ik
 
 ---
 
+## 🤖 Cara Mendapatkan Token & Username untuk Mutasi
+
+Untuk mengakses fitur mutasi OrderKuota, kamu membutuhkan **auth_token** dan **auth_username**. Dapatkan melalui bot Telegram:
+
+### **Via Bot Telegram:**
+1. **Buka Bot:** [@orderkuotaBot](https://t.me/orderkuotaBot)
+2. **Login:** `/login username password`
+3. **Verifikasi OTP:** `/otp kode_otp`
+4. **Dapatkan Token:** Bot akan menampilkan `auth_token` setelah login berhasil
+
+> ⚠️ **Penting:** Token akan expired setelah 1 jam. Login ulang jika diperlukan.
+
+---
+
 ## 📚 Dokumentasi
 
 <div align="center">
