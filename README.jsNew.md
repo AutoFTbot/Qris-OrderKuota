@@ -5,7 +5,6 @@ Library TypeScript untuk mengambil data mutasi QRIS dengan fitur **Anti-Deteksi*
 ## Fitur Utama
 
 - **🛡️ Anti-Deteksi**: Menggunakan algoritma "Seed-based Device ID". Username Anda akan selalu menghasilkan ID HP, Model, dan User-Agent yang sama.
-- **🔒 Aman**: Kode terdistribusi dalam bentuk ter-obfuscasi (acak).
 - **⚡ Ringan**: Menggunakan `axios` untuk koneksi yang cepat.
 - **🖼️ QRIS Generator**: Membuat QRIS dinamis dan gambar QRIS.
 
