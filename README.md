@@ -102,6 +102,7 @@ Untuk mengakses fitur mutasi OrderKuota, kamu membutuhkan **auth_token** dan **a
 | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" width="20" height="20"/> JavaScript | [`README.js.md`](README.js.md) |
 | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" width="20" height="20"/> JavaScript | [`README.jsNew.md`](README.jsNew.md) |
 | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" width="20" height="20"/> Python | [`README.py.md`](README.py.md) |
+| <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" width="20" height="20"/> Python | [`README.pyNew.md`](README.pyNew.md) |
 | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/go/go-original.svg" width="20" height="20"/> Go | [`README.go.md`](README.go.md) <br/> <sub>⚠️ Fitur Custom Logo tidak tersedia</sub> |
 
 </div>
