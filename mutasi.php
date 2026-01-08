@@ -1,6 +1,6 @@
 <?php
 /*
- * mutasi.php adalah kode di mana untuk membuat api mutasi orkut di shared hosting!!!
+ * mutasi.php adalah kode di mana untuk membuat api mutasi orkut di shared hosting,untuk .htaccess ganrate aja sendiri
  */
 
 if (php_sapi_name() == "cli") die("CLI access denied - Web only");
