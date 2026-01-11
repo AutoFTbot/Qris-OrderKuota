@@ -23,7 +23,7 @@ Package Node.js untuk generate QRIS, cek status pembayaran, dan buat receipt PDF
 npm install autoft-qris
 ```
 
-## *Quick Start
+## Quick Start
 
 ### 1. Setup Dasar
 
