@@ -2,7 +2,7 @@
 
 Package Python untuk generate QRIS dan cek status pembayaran dengan fitur monitoring realtime.
 
-## 🚀 Fitur Terbaru (v1.1.3)
+## 🚀 Fitur Terbaru (v1.2.0)
 
 - ✅ **Generate QRIS** dengan nominal tertentu
 - ✅ **Tambah logo** di tengah QR
@@ -13,11 +13,12 @@ Package Python untuk generate QRIS dan cek status pembayaran dengan fitur monito
 - ✅ **Perhitungan checksum CRC16**
 - ✅ **Error handling** yang informatif
 - ✅ **Type hints** untuk development yang lebih baik
+- 🆕 **URL mutasi manual** - Tidak lagi hardcoded, bisa disesuaikan
 
 ## 📦 Instalasi
 
 ```bash
-pip install qris-payment==1.1.3
+pip install qris-payment==1.2.0
 ```
 
 ## 🔑 Cara Mendapatkan Auth Token
@@ -27,10 +28,35 @@ Untuk mendapatkan `auth_username` dan `auth_token`, hubungi bot Telegram:
 **@AutoFtBot** - Bot resmi untuk mendapatkan kredensial QRIS Payment
 
 ### Langkah-langkah:
-1. Buka Telegram dan cari **@AuutooFtBot**
+1. Buka Telegram dan cari **@AutoFtBot**
 2. Kirim pesan `/start`
 3. Ikuti instruksi untuk mendapatkan kredensial
 4. Bot akan memberikan `auth_username` dan `auth_token`
+
+## 🔄 Migrasi dari v1.1.x ke v1.2.0
+
+**BREAKING CHANGE:** Versi 1.2.0 memerlukan konfigurasi `mutasi_url` manual.
+
+### Sebelum (v1.1.x):
+```python
+config = {
+    'auth_username': 'YOUR_AUTH_USERNAME',
+    'auth_token': 'YOUR_AUTH_TOKEN',
+    'base_qr_string': 'YOUR_BASE_QR_STRING'
+}
+```
+
+### Sekarang (v1.2.0):
+```python
+config = {
+    'auth_username': 'YOUR_AUTH_USERNAME',
+    'auth_token': 'YOUR_AUTH_TOKEN',
+    'mutasi_url': 'YOUR_MUTASI_API_URL',  # WAJIB ditambahkan
+    'base_qr_string': 'YOUR_BASE_QR_STRING'
+}
+```
+
+**Catatan:** Hubungi @AutoFtBot untuk mendapatkan URL mutasi yang sesuai dengan akun Anda.
 
 ## 🛠️ Penggunaan
 
@@ -42,6 +68,7 @@ from qris_payment import QRISPayment
 config = {
     'auth_username': 'YOUR_AUTH_USERNAME',  # Dapat dari @AutoFtBot
     'auth_token': 'YOUR_AUTH_TOKEN',        # Dapat dari @AutoFtBot
+    'mutasi_url': 'YOUR_MUTASI_API_URL',    # URL API mutasi (manual setting)
     'base_qr_string': 'YOUR_BASE_QR_STRING',
     'logo_path': 'path/to/logo.png'  # Opsional
 }
@@ -83,7 +110,8 @@ from qris_payment.payment_checker import PaymentChecker
 
 checker = PaymentChecker({
     'auth_username': 'YOUR_AUTH_USERNAME',
-    'auth_token': 'YOUR_AUTH_TOKEN'
+    'auth_token': 'YOUR_AUTH_TOKEN',
+    'mutasi_url': 'YOUR_MUTASI_API_URL'
 }, debug=True)
 
 result = checker.check_payment_status(None, 10000)
@@ -95,6 +123,7 @@ result = checker.check_payment_status(None, 10000)
 |-----------|------|-----------|-------|
 | auth_username | string | Username dari @AutoFtBot | Ya |
 | auth_token | string | Token dari @AutoFtBot | Ya |
+| mutasi_url | string | URL API mutasi (manual setting) | Ya |
 | base_qr_string | string | String dasar QRIS | Ya |
 | logo_path | string | Path ke file logo (opsional) | Tidak |
 
@@ -134,6 +163,7 @@ from qris_payment import QRISPayment
 config = {
     'auth_username': 'YOUR_AUTH_USERNAME',
     'auth_token': 'YOUR_AUTH_TOKEN',
+    'mutasi_url': 'YOUR_MUTASI_API_URL',
     'base_qr_string': 'YOUR_BASE_QR_STRING',
     'logo_path': './logo.png'
 }
@@ -174,12 +204,19 @@ Package ini akan melempar exception dengan pesan yang jelas:
 - **Format QRIS tidak valid** - Pastikan base_qr_string mengandung "5802ID"
 - **Nominal harus > 0** - Amount harus positif
 - **Auth credentials tidak valid** - Cek username dan token dari @AutoFtBot
-- **API tidak dapat diakses** - Cek koneksi internet
+- **URL mutasi tidak valid** - Pastikan mutasi_url sudah diisi dengan benar
+- **API tidak dapat diakses** - Cek koneksi internet dan URL mutasi
 - **Response tidak valid** - Ada masalah dengan server API
 
 ## 📝 Changelog
 
-### v1.1.3 (Latest)
+### v1.2.0 (Latest)
+- 🆕 **URL mutasi manual** - Tidak lagi hardcoded, sekarang bisa disesuaikan
+- ✅ Konfigurasi `mutasi_url` wajib diisi manual
+- ✅ Lebih fleksibel untuk berbagai provider API
+- ✅ Breaking change: Perlu tambah `mutasi_url` di config
+
+### v1.1.5
 - ✅ Filter waktu diperpanjang dari 5 menit ke 10 menit
 - ✅ Debug mode untuk monitoring detail
 - ✅ Error handling yang lebih robust
