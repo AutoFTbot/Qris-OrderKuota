@@ -1,9 +1,8 @@
-# 📋 Panduan Pemasangan API Mutasi QRIS di cPanel
-
 ## 🎯 Overview
-Panduan lengkap untuk menginstall dan mengkonfigurasi API Mutasi QRIS (OrderKuota) di hosting cPanel
+Panduan lengkap untuk menginstall dan mengkonfigurasi API Mutasi QRIS (OrderKuota) di hosting cPanel.
 
-[Hosting Mantap](https://clients.anymhost.id/aff.php?aff=833)
+**Pakai hosting ini aja biar lancar soalnya udah saya pakai 1 tahun aman: cPanel full license, cron job unlimited, server Indo cepat!**  
+🚀 **[Hosting Mantap - Diskon Spesial + Free Migrate](https://clients.anymhost.id/aff.php?aff=833)**
 
 ---
 
