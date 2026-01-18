@@ -3,6 +3,8 @@
 ## 🎯 Overview
 Panduan lengkap untuk menginstall dan mengkonfigurasi API Mutasi QRIS (OrderKuota) di hosting cPanel
 
+[Hosting Mantap](https://clients.anymhost.id/aff.php?aff=833)
+
 ---
 
 ## 📦 Files yang Dibutuhkan
@@ -74,7 +76,7 @@ File `.htaccess` sudah dikonfigurasi untuk:
 
 ### Test 3: API Endpoint
 ```bash
-curl -X POST https://yourdomain.com/mutasi \
+curl -X POST https://yourdomain.com/api/mutasi \
 -H "Content-Type: application/json" \
 -d '{"auth_token":"test","auth_username":"test"}'
 ```
