@@ -29,10 +29,10 @@ Bot Telegram untuk mengakses layanan OrderKuota dengan mudah. Cek saldo QRIS, li
 ### 1. Upload ke cPanel
 
 1. Login cPanel → **File Manager**
-2. Buat folder `bot` di `public_html`
+2. Buat folder `bot` di `public_html atau apalah bebas`
 3. Upload `bot/bot.php` ke folder `bot`
 4. Upload `bot/test.php` ke folder `bot`
-5. Buat file `.env` di `public_html`:
+5. Buat file `.env` di `public_html atau apalah bebas`:
 
 ```env
 TELEGRAM_BOT_TOKEN=1234567890:ABCdefGHIjklMNOpqrsTUVwxyz
